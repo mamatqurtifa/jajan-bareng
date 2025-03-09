@@ -29,7 +29,9 @@ class ProductResource extends Resource
                 ->nullable(),
             Forms\Components\TextInput::make('price')
                 ->numeric()
-                ->required(),
+                ->required()
+                ->prefix('IDR')
+                ->inputMode('decimal'),
             Forms\Components\DatePicker::make('available_date')
                 ->required(),
             Forms\Components\TextInput::make('stock')
