@@ -24,11 +24,11 @@ class ProductResource extends Resource
             Forms\Components\Select::make('organization_id')
                 ->relationship('organization', 'name')
                 ->required()
-                ->visible(fn() => $user->roles->contains('name', 'Super Admin')),
+                ->visible(fn() => $user->roles->contains('name', 'super_admin')),
             Hidden::make('organization_id')
                 ->default(fn() => $user->organization_id)
                 ->dehydrated()
-                ->visible(fn() => !$user->roles->contains('name', 'Super Admin')),
+                ->visible(fn() => !$user->roles->contains('name', 'super_admin')),
             Forms\Components\TextInput::make('name')
                 ->required()
                 ->maxLength(255),
@@ -59,7 +59,7 @@ class ProductResource extends Resource
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('organization.name')
                     ->sortable()
-                    ->visible(fn() => $user->roles->contains('name', 'Super Admin')),
+                    ->visible(fn() => $user->roles->contains('name', 'super_admin')),
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('price')->money('IDR', true),
                 Tables\Columns\TextColumn::make('available_date')->date(),
@@ -92,7 +92,7 @@ class ProductResource extends Resource
         $query = parent::getEloquentQuery();
         $user = Filament::auth()->user();
 
-        if ($user->roles->contains('name', 'Organization Admin')) {
+        if ($user->roles->contains('name', 'organization_admin')) {
             return $query->where('organization_id', $user->organization_id);
         }
 
@@ -103,8 +103,8 @@ class ProductResource extends Resource
     {
         $user = Filament::auth()->user();
 
-        return $user->roles->contains('name', 'Super Admin') ||
-            ($user->roles->contains('name', 'Organization Admin') &&
+        return $user->roles->contains('name', 'super_admin') ||
+            ($user->roles->contains('name', 'organization_admin') &&
                 $record->organization_id == $user->organization_id);
     }
 
@@ -112,8 +112,8 @@ class ProductResource extends Resource
     {
         $user = Filament::auth()->user();
 
-        return $user->roles->contains('name', 'Super Admin') ||
-            ($user->roles->contains('name', 'Organization Admin') &&
+        return $user->roles->contains('name', 'super_admin') ||
+            ($user->roles->contains('name', 'organization_admin') &&
                 $record->organization_id == $user->organization_id);
     }
 
@@ -121,8 +121,8 @@ class ProductResource extends Resource
     {
         $user = Filament::auth()->user();
 
-        return $user->roles->contains('name', 'Super Admin') ||
-            ($user->roles->contains('name', 'Organization Admin') &&
+        return $user->roles->contains('name', 'super_admin') ||
+            ($user->roles->contains('name', 'organization_admin') &&
                 $record->organization_id == $user->organization_id);
     }
 }
