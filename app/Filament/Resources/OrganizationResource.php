@@ -22,6 +22,9 @@ class OrganizationResource extends Resource
             Forms\Components\TextInput::make('name')
                 ->required()
                 ->maxLength(255),
+            Forms\Components\FileUpload::make('image')
+                ->image()
+                ->nullable(),
             Forms\Components\Textarea::make('description')
                 ->nullable(),
         ]);
@@ -31,6 +34,7 @@ class OrganizationResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('description')->limit(50),
             ])
