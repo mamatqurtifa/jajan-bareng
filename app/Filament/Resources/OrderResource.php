@@ -5,50 +5,58 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
 
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
+    protected static ?string $navigationIcon = 'heroicon-o-receipt-refund';
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart'; // Ikon untuk menu navigasi
-
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('customer_id')
-                    ->relationship('customer', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('total_price')
-                    ->numeric()
-                    ->required(),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'pending' => 'Pending',
-                        'completed' => 'Completed',
-                        'cancelled' => 'Cancelled',
-                    ])
-                    ->required(),
-            ]);
+        return $form->schema([
+            Forms\Components\Select::make('user_id')
+                ->relationship('user', 'name')
+                ->required(),
+            Forms\Components\Select::make('organization_id')
+                ->relationship('organization', 'name')
+                ->required(),
+            Forms\Components\Select::make('status')
+                ->options([
+                    'pending' => 'Pending',
+                    'delivered' => 'Delivered',
+                    'completed' => 'Completed',
+                    'canceled' => 'Canceled',
+                ])
+                ->required(),
+            Forms\Components\TextInput::make('total_price')
+                ->numeric()
+                ->required(),
+        ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('customer.name')->label('Customer')->sortable(),
-                Tables\Columns\TextColumn::make('total_price')->sortable(),
-                Tables\Columns\TextColumn::make('status')->sortable(),
+                Tables\Columns\TextColumn::make('user.name')->sortable(),
+                Tables\Columns\TextColumn::make('organization.name')->sortable(),
+                Tables\Columns\TextColumn::make('status')->badge(),
+                Tables\Columns\TextColumn::make('total_price')->money('IDR', true),
                 Tables\Columns\TextColumn::make('created_at')->dateTime(),
             ])
-            ->filters([
-                //
-            ]);
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->filters([]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [];
     }
 
     public static function getPages(): array

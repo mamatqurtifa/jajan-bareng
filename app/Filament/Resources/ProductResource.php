@@ -5,52 +5,61 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag'; // Ikon untuk menu navigasi
-
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->maxLength(65535),
-                Forms\Components\TextInput::make('price')
-                    ->numeric()
-                    ->required(),
-                Forms\Components\TextInput::make('stock')
-                    ->numeric()
-                    ->required(),
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'name')
-                    ->required(),
-            ]);
+        return $form->schema([
+            Forms\Components\Select::make('organization_id')
+                ->relationship('organization', 'name')
+                ->required(),
+            Forms\Components\TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\Textarea::make('description')
+                ->nullable(),
+            Forms\Components\FileUpload::make('image')
+                ->image()
+                ->nullable(),
+            Forms\Components\TextInput::make('price')
+                ->numeric()
+                ->required(),
+            Forms\Components\DatePicker::make('available_date')
+                ->required(),
+            Forms\Components\TextInput::make('stock')
+                ->numeric()
+                ->default(0),
+        ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\TextColumn::make('organization.name')->sortable(),
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('price')->sortable(),
+                Tables\Columns\TextColumn::make('price')->money('IDR', true),
+                Tables\Columns\TextColumn::make('available_date')->date(),
                 Tables\Columns\TextColumn::make('stock')->sortable(),
-                Tables\Columns\TextColumn::make('category.name')->label('Category'),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
             ])
-            ->filters([
-                //
-            ]);
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->filters([]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [];
     }
 
     public static function getPages(): array

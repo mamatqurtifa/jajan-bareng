@@ -2,26 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'customer_id',
-        'total_price',
-        'status'
+        'user_id',
+        'organization_id',
+        'status',
+        'total_price'
     ];
 
-    public function customer()
+    public function user()
     {
-        return $this->belongsTo(Customer::class); // Pesanan ini milik satu pelanggan
+        return $this->belongsTo(User::class);
     }
 
-    public function products()
+    public function organization()
     {
-        return $this->belongsToMany(Product::class, 'order_product')->withPivot('quantity'); // Pesanan bisa memiliki banyak produk
+        return $this->belongsTo(Organization::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

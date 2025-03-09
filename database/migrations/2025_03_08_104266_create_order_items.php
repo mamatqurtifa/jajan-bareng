@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Nama pelanggan
-            $table->string('email')->unique(); // Email pelanggan unik
-            $table->string('phone'); // Nomor telepon pelanggan
-            $table->text('address'); // Alamat pelanggan
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->integer('quantity')->default(1);
+            $table->decimal('subtotal', 10, 2);
             $table->timestamps();
         });
+        
     }
 
     /**
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('order_items');
     }
 };

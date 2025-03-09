@@ -2,28 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'organization_id',
         'name',
         'description',
+        'image',
         'price',
-        'stock',
-        'category_id'
+        'available_date',
+        'stock'
     ];
 
-    public function category()
+    public function organization()
     {
-        return $this->belongsTo(Category::class); // Produk ini milik satu kategori
-    }
-
-    public function orders()
-    {
-        return $this->belongsToMany(Order::class, 'order_product')->withPivot('quantity'); // Produk bisa ada di banyak pesanan
+        return $this->belongsTo(Organization::class);
     }
 }
