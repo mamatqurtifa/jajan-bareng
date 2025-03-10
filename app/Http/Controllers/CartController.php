@@ -31,26 +31,27 @@ class CartController extends Controller
     public function add(Request $request)
     {
         $product = Product::find($request->product_id);
+
+        if (!$product) {
+            return response()->json(['success' => false, 'message' => 'Product not found.']);
+        }
+
         $cart = session()->get('cart', []);
 
         if (isset($cart[$product->id])) {
-            if ($cart[$product->id]['quantity'] < $product->stock) {
-                $cart[$product->id]['quantity']++;
-            } else {
-                return redirect()->route('cart.index')->with('error', 'Quantity exceeds available stock!');
-            }
+            $cart[$product->id]['quantity']++;
         } else {
             $cart[$product->id] = [
-                "name" => $product->name,
-                "quantity" => 1,
-                "price" => $product->price,
-                "image" => $product->image,
-                "stock" => $product->stock 
+                'name' => $product->name,
+                'quantity' => 1,
+                'price' => $product->price,
+                'image' => $product->image
             ];
         }
 
         session()->put('cart', $cart);
-        return redirect()->route('cart.index')->with('success', 'Product added to cart!');
+
+        return response()->json(['success' => true, 'message' => 'Product added to cart successfully!']);
     }
 
     public function update(Request $request)

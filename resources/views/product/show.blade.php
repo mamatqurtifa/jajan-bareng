@@ -18,7 +18,7 @@
                 @elseif($inCart)
                     <p class="text-green-500 mb-4">This product is already in your cart.</p>
                 @else
-                    <form action="{{ route('cart.add') }}" method="POST">
+                    <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <button type="submit" class="inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Add to Cart</button>
@@ -29,4 +29,39 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.add-to-cart-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(this);
+                const action = this.action;
+                const button = this.querySelector('button[type="submit"]');
+
+                fetch(action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const message = document.createElement('p');
+                        message.classList.add('text-green-500', 'mt-4');
+                        message.textContent = 'This product is already in your cart.';
+                        button.parentNode.replaceChild(message, button);
+                    } else {
+                        alert('Failed to add product to cart.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+            });
+        });
+    </script>
 </x-app-layout>
