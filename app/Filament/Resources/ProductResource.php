@@ -10,6 +10,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Hidden;
+use Illuminate\Support\Facades\Auth;
 
 class ProductResource extends Resource
 {
@@ -19,17 +20,9 @@ class ProductResource extends Resource
     public static function form(Forms\Form $form): Forms\Form
     {
         $user = Filament::auth()->user();
+        $isSuperAdmin = $user->roles->contains('name', 'super_admin');
 
-        return $form->schema([
-            Forms\Components\Select::make('organization_id')
-                ->relationship('organization', 'name')
-                ->required()
-                ->visible(fn() => $user->roles->contains('name', 'super_admin')),
-            Hidden::make('organization_id')
-                ->default(fn() => $user->organization_id)
-                ->dehydrated()
-                ->required()
-                ->visible(fn() => !$user->roles->contains('name', 'super_admin')),
+        $formSchema = [
             Forms\Components\TextInput::make('name')
                 ->required()
                 ->maxLength(255),
@@ -50,13 +43,29 @@ class ProductResource extends Resource
                 ->required()
                 ->numeric()
                 ->default(0),
-        ]);
+        ];
+
+        // Insert the appropriate organization field at the beginning based on user role
+        if ($isSuperAdmin) {
+            array_unshift($formSchema, 
+                Forms\Components\Select::make('organization_id')
+                    ->relationship('organization', 'name')
+                    ->required()
+            );
+        } else {
+            array_unshift($formSchema, 
+                Forms\Components\Hidden::make('organization_id')
+                    ->default($user->organization_id)
+            );
+        }
+
+        return $form->schema($formSchema);
     }
 
     public static function table(Tables\Table $table): Tables\Table
     {
         $user = Filament::auth()->user();
-        
+
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image'),
