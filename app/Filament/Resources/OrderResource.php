@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
+use App\Models\Organization;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,14 +28,28 @@ class OrderResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')->label('Order ID')->sortable(),
                 Tables\Columns\TextColumn::make('user.name')->sortable()->label('Customer'),
-                Tables\Columns\TextColumn::make('user.phone')->label('Customer Phone')->sortable(), // Add customer phone column
+                Tables\Columns\TextColumn::make('user.phone')->label('Customer Phone'),
                 Tables\Columns\TextColumn::make('organization.name')
                     ->sortable()
                     ->visible(fn() => $user->roles->contains('name', 'super_admin')),
                 Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('total_price')->money('IDR', true),
                 Tables\Columns\TextColumn::make('note')->label('Note'),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'delivered' => 'Delivered',
+                        'completed' => 'Completed',
+                        'canceled' => 'Canceled',
+                    ])
+                    ->label('Status'),
+                Tables\Filters\SelectFilter::make('organization_id')
+                    ->options(Organization::all()->pluck('name', 'id')->toArray())
+                    ->label('Organization')
+                    ->visible(fn() => $user->roles->contains('name', 'super_admin')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -59,8 +74,7 @@ class OrderResource extends Resource
                     ]);
                 })
                 ->successNotificationTitle('Order status updated'),
-            ])
-            ->filters([]);
+            ]);
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -74,7 +88,7 @@ class OrderResource extends Resource
                         Infolists\Components\TextEntry::make('user.name')
                             ->label('Customer'),
                         Infolists\Components\TextEntry::make('user.phone')
-                            ->label('Customer Phone'), // Add customer phone to infolist
+                            ->label('Customer Phone'),
                         Infolists\Components\TextEntry::make('organization.name')
                             ->label('Organization'),
                         Infolists\Components\TextEntry::make('status')

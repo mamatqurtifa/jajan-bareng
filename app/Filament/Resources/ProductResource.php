@@ -28,15 +28,17 @@ class ProductResource extends Resource
             Hidden::make('organization_id')
                 ->default(fn() => $user->organization_id)
                 ->dehydrated()
+                ->required()
                 ->visible(fn() => !$user->roles->contains('name', 'super_admin')),
             Forms\Components\TextInput::make('name')
                 ->required()
                 ->maxLength(255),
             Forms\Components\Textarea::make('description')
-                ->nullable(),
+                ->nullable()
+                ->required(),
             Forms\Components\FileUpload::make('image')
-                ->image()
-                ->nullable(),
+                ->required()
+                ->image(),
             Forms\Components\TextInput::make('price')
                 ->numeric()
                 ->required()
@@ -45,6 +47,7 @@ class ProductResource extends Resource
             Forms\Components\DatePicker::make('available_date')
                 ->required(),
             Forms\Components\TextInput::make('stock')
+                ->required()
                 ->numeric()
                 ->default(0),
         ]);

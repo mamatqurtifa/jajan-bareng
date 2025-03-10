@@ -24,11 +24,11 @@ class OrganizationResource extends Resource
                 ->maxLength(255),
             Forms\Components\FileUpload::make('image')
                 ->image()
-                ->nullable(),
+                ->required(),
             Forms\Components\Textarea::make('description')
-                ->nullable(),
+                ->required(),
             Forms\Components\TextInput::make('phone') // Add phone field to form
-                ->nullable()
+                ->required()
                 ->maxLength(15),
         ]);
     }
