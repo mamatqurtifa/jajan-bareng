@@ -13,11 +13,11 @@
                 <h2 class="text-xl font-bold mb-4">No items available on this date</h2>
             </div>
         @else
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
                 @foreach($products as $product)
                     @if($product->available_date == $currentDate)
                         <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                            <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-48 object-cover" alt="{{ $product->name }}">
+                            <img src="{{ asset('storage/' . $product->image) }}" class="aspect-h-1 aspect-w-1" alt="{{ $product->name }}">
                             <div class="p-4">
                                 <h5 class="text-lg font-semibold">{{ $product->name }}</h5>
                                 <p class="text-gray-700 mt-2">Rp{{ number_format($product->price, 0) }}</p>

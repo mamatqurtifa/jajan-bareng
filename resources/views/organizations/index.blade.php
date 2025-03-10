@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="container mx-auto my-8 px-4">
         <h1 class="text-2xl font-bold mb-6">Organizations</h1>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
             @foreach($organizations as $organization)
                 <div class="bg-white shadow-md rounded-lg overflow-hidden">
                     <div class="aspect-w-1 aspect-h-1">

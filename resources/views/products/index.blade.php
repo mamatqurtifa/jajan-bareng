@@ -1,11 +1,6 @@
 <x-app-layout>
     <div class="container mx-auto my-8 px-4">
         <h1 class="text-2xl font-bold mb-6">All Products</h1>
-        
-        <!-- Display Current Date -->
-        <div class="mb-4">
-            <p class="text-gray-700">Current Date: {{ $currentDate }}</p>
-        </div>
 
         <!-- Form to Change Date -->
         <form id="dateForm" action="{{ route('products.index') }}" method="GET" class="mb-6">
@@ -18,10 +13,10 @@
                 <h2 class="text-xl font-bold mb-4">No items available on this date</h2>
             </div>
         @else
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
                 @foreach($products as $product)
                     <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                        <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-48 object-cover" alt="{{ $product->name }}">
+                        <img src="{{ asset('storage/' . $product->image) }}" class="aspect-w-1 aspect-h-1" alt="{{ $product->name }}">
                         <div class="p-4">
                             <h5 class="text-lg font-semibold">{{ $product->name }}</h5>
                             <p class="text-gray-700 mt-2">Rp{{ number_format($product->price, 0) }}</p>
