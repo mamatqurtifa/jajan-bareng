@@ -52,9 +52,11 @@ Route::post('/cart/remove', [CartController::class, 'remove'])
     ->middleware(['auth', 'verified'])
     ->name('cart.remove');
 Route::get('/cart', [CartController::class, 'index'])
+    ->middleware(['auth', 'verified'])
     ->name('cart.index');
 
 Route::get('/products', [ProductController::class, 'index'])
+    ->middleware(['auth', 'verified'])
     ->name('products.index');
 
 require __DIR__ . '/auth.php';
