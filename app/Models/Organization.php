@@ -13,7 +13,8 @@ class Organization extends Model
     [
         'name',
         'description',
-        'image'
+        'image',
+        'phone'
     ];
 
     public function users()

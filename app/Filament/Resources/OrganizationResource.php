@@ -24,9 +24,12 @@ class OrganizationResource extends Resource
                 ->maxLength(255),
             Forms\Components\FileUpload::make('image')
                 ->image()
-                ->nullable(),
+                ->required(),
             Forms\Components\Textarea::make('description')
-                ->nullable(),
+                ->required(),
+            Forms\Components\TextInput::make('phone') // Add phone field to form
+                ->required()
+                ->maxLength(15),
         ]);
     }
 
@@ -37,6 +40,7 @@ class OrganizationResource extends Resource
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('description')->limit(50),
+                Tables\Columns\TextColumn::make('phone')->label('Phone'), // Add phone column to table
             ])
             ->filters([])
             ->actions([
