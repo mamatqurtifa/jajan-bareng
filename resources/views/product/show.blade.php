@@ -12,6 +12,7 @@
                 <p class="text-gray-900 text-xl font-bold mb-4">Rp{{ number_format($product->price, 0) }}</p>
                 <p class="text-gray-700 mb-4">Stock: {{ $product->stock }}</p>
                 <p class="text-gray-700 mb-4">Available Date: {{ $product->available_date }}</p>
+                <p class="text-gray-700 mb-4">Organization: {{ $product->organization->name }}</p> <!-- Display organization name -->
                 
                 @php
                     $cart = session()->get('cart', []);
