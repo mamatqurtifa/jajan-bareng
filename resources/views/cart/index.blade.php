@@ -11,29 +11,40 @@
                 {{ session('error') }}
             </div>
         @endif
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            @foreach($updatedCart as $id => $details)
-                <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                    <img src="{{ asset('storage/' . $details['image']) }}" class="w-full h-48 object-cover" alt="{{ $details['name'] }}">
-                    <div class="p-4">
-                        <h5 class="text-lg font-semibold">{{ $details['name'] }}</h5>
-                        <p class="text-gray-700 mt-2">Rp{{ number_format($details['price'], 0) }}</p>
-                        <p class="text-gray-700 mt-2">Stock: {{ $details['stock'] }}</p>
-                        <form action="{{ route('cart.update') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $id }}">
-                            <input type="number" name="quantity" value="{{ $details['quantity'] }}" min="1" max="{{ $details['stock'] }}" class="mt-2 p-2 border rounded">
-                            <button type="submit" class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Update Quantity</button>
-                        </form>
-                        <form action="{{ route('cart.remove') }}" method="POST" class="mt-2">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $id }}">
-                            <button type="submit" class="inline-block bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Remove</button>
-                        </form>
-                        <p class="text-gray-700 mt-2">Total: Rp{{ number_format($details['price'] * $details['quantity'], 0) }}</p>
+
+        @if(count($updatedCart) > 0)
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                @foreach($updatedCart as $id => $details)
+                    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                        <img src="{{ asset('storage/' . $details['image']) }}" class="w-full h-48 object-cover" alt="{{ $details['name'] }}">
+                        <div class="p-4">
+                            <h5 class="text-lg font-semibold">{{ $details['name'] }}</h5>
+                            <p class="text-gray-700 mt-2">Rp{{ number_format($details['price'], 0) }}</p>
+                            <p class="text-gray-700 mt-2">Stock: {{ $details['stock'] }}</p>
+                            <form action="{{ route('cart.update') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $id }}">
+                                <input type="number" name="quantity" value="{{ $details['quantity'] }}" min="1" max="{{ $details['stock'] }}" class="mt-2 p-2 border rounded">
+                                <button type="submit" class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Update Quantity</button>
+                            </form>
+                            <form action="{{ route('cart.remove') }}" method="POST" class="mt-2">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $id }}">
+                                <button type="submit" class="inline-block bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Remove</button>
+                            </form>
+                            <p class="text-gray-700 mt-2">Total: Rp{{ number_format($details['price'] * $details['quantity'], 0) }}</p>
+                        </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
+            <div class="mt-6">
+                <a href="{{ route('checkout.index') }}" class="inline-block bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Proceed to Checkout</a>
+            </div>
+        @else
+            <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
+                <h2 class="text-xl font-bold mb-4">Your cart is empty</h2>
+                <a href="{{ route('organizations.index') }}" class="inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Continue Shopping</a>
+            </div>
+        @endif
     </div>
 </x-app-layout>

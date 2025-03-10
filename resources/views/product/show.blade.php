@@ -13,7 +13,9 @@
                     $inCart = isset($cart[$product->id]);
                 @endphp
 
-                @if($inCart)
+                @if($product->stock == 0)
+                    <p class="text-red-500 mb-4">Out of Stock</p>
+                @elseif($inCart)
                     <p class="text-green-500 mb-4">This product is already in your cart.</p>
                 @else
                     <form action="{{ route('cart.add') }}" method="POST">
