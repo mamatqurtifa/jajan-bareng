@@ -12,6 +12,7 @@
                                 <th class="py-3 px-6 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase">Order ID</th>
                                 <th class="py-3 px-6 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase">Organization</th>
                                 <th class="py-3 px-6 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase">Total Price</th>
+                                <th class="py-3 px-6 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase">Note</th>
                                 <th class="py-3 px-6 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase">Status</th>
                                 <th class="py-3 px-6 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase">Actions</th>
                             </tr>
@@ -22,6 +23,7 @@
                                     <td class="py-4 px-6 border-b border-gray-300">{{ $order->id }}</td>
                                     <td class="py-4 px-6 border-b border-gray-300">{{ $order->organization->name }}</td>
                                     <td class="py-4 px-6 border-b border-gray-300">Rp{{ number_format($order->total_price, 0) }}</td>
+                                    <td class="py-4 px-6 border-b border-gray-300">{{ $order->note }}</td>
                                     <td class="py-4 px-6 border-b border-gray-300">{{ ucfirst($order->status) }}</td>
                                     <td class="py-4 px-6 border-b border-gray-300">
                                         <a href="{{ route('orders.show', $order->id) }}" class="text-blue-500 hover:underline">View</a>

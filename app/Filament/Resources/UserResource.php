@@ -23,6 +23,9 @@ class UserResource extends Resource
                 ->email()
                 ->required()
                 ->maxLength(255),
+            Forms\Components\TextInput::make('phone') // Add phone field to form
+                ->required()
+                ->maxLength(15),
             Forms\Components\TextInput::make('password')
                 ->password()
                 ->maxLength(255)
@@ -44,6 +47,7 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('phone')->label('Phone')->sortable()->searchable(), // Add phone column to table
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')->label('Roles')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('organization.name')->label('Organization')->sortable()->searchable(),

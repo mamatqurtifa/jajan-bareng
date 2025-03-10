@@ -26,7 +26,8 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->label('Order ID')->sortable(),
-                Tables\Columns\TextColumn::make('user.name')->sortable(),
+                Tables\Columns\TextColumn::make('user.name')->sortable()->label('Customer'),
+                Tables\Columns\TextColumn::make('user.phone')->label('Customer Phone')->sortable(), // Add customer phone column
                 Tables\Columns\TextColumn::make('organization.name')
                     ->sortable()
                     ->visible(fn() => $user->roles->contains('name', 'super_admin')),
@@ -72,6 +73,8 @@ class OrderResource extends Resource
                             ->label('Order ID'),
                         Infolists\Components\TextEntry::make('user.name')
                             ->label('Customer'),
+                        Infolists\Components\TextEntry::make('user.phone')
+                            ->label('Customer Phone'), // Add customer phone to infolist
                         Infolists\Components\TextEntry::make('organization.name')
                             ->label('Organization'),
                         Infolists\Components\TextEntry::make('status')

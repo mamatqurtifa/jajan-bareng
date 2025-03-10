@@ -5,6 +5,8 @@
             <h2 class="text-xl font-bold mb-4">Order ID: {{ $order->id }}</h2>
             <p class="text-gray-700 mb-4">Organization: <span class="font-semibold">{{ $order->organization->name }}</span></p>
             <p class="text-gray-700 mb-4">Total Price: <span class="font-semibold">Rp{{ number_format($order->total_price, 0) }}</span></p>
+            <p class="text-gray-700 mb-4">Contact Person: <span class="font-semibold">{{ $order->organization->phone }}</span></p>
+            <p class="text-gray-700 mb-4">Note: <span class="font-semibold">{{ $order->note }}</span></p>
             <p class="text-gray-700 mb-4">Status: <span class="font-semibold">{{ ucfirst($order->status) }}</span></p>
             <h3 class="text-lg font-bold mb-4">Order Items</h3>
             <ul>

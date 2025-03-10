@@ -27,6 +27,9 @@ class OrganizationResource extends Resource
                 ->nullable(),
             Forms\Components\Textarea::make('description')
                 ->nullable(),
+            Forms\Components\TextInput::make('phone') // Add phone field to form
+                ->nullable()
+                ->maxLength(15),
         ]);
     }
 
@@ -37,6 +40,7 @@ class OrganizationResource extends Resource
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('description')->limit(50),
+                Tables\Columns\TextColumn::make('phone')->label('Phone'), // Add phone column to table
             ])
             ->filters([])
             ->actions([
