@@ -7,6 +7,8 @@ use App\Models\OrderItem;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Facades\Filament;
 
 class OrderItemResource extends Resource
 {
@@ -46,6 +48,20 @@ class OrderItemResource extends Resource
                 // Tables\Actions\DeleteAction::make(),
             ])
             ->filters([]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = Filament::auth()->user();
+
+        if ($user->roles->contains('name', 'organization_admin')) {
+            return $query->whereHas('order', function (Builder $query) use ($user) {
+                $query->where('organization_id', $user->organization_id);
+            });
+        }
+
+        return $query;
     }
 
     public static function getRelations(): array
