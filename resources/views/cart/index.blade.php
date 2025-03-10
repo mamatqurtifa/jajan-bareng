@@ -21,11 +21,15 @@
                             <h5 class="text-lg font-semibold">{{ $details['name'] }}</h5>
                             <p class="text-gray-700 mt-2">Rp{{ number_format($details['price'], 0) }}</p>
                             <p class="text-gray-700 mt-2">Stock: {{ $details['stock'] }}</p>
-                            <form action="{{ route('cart.update') }}" method="POST">
+                            <div class="flex items-center mt-2">
+                                <button class="bg-gray-300 text-gray-700 px-2 py-1 rounded-l" onclick="updateQuantity('{{ $id }}', -1)">-</button>
+                                <input type="number" name="quantity" id="quantity-{{ $id }}" value="{{ $details['quantity'] }}" min="1" max="{{ $details['stock'] }}" class="w-16 text-center border-t border-b border-gray-300">
+                                <button class="bg-gray-300 text-gray-700 px-2 py-1 rounded-r" onclick="updateQuantity('{{ $id }}', 1)">+</button>
+                            </div>
+                            <form action="{{ route('cart.update') }}" method="POST" id="update-form-{{ $id }}" class="hidden">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $id }}">
-                                <input type="number" name="quantity" value="{{ $details['quantity'] }}" min="1" max="{{ $details['stock'] }}" class="mt-2 p-2 border rounded">
-                                <button type="submit" class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Update Quantity</button>
+                                <input type="hidden" name="quantity" id="hidden-quantity-{{ $id }}" value="{{ $details['quantity'] }}">
                             </form>
                             <form action="{{ route('cart.remove') }}" method="POST" class="mt-2">
                                 @csrf
@@ -47,4 +51,17 @@
             </div>
         @endif
     </div>
+
+    <script>
+        function updateQuantity(productId, change) {
+            const quantityInput = document.getElementById('quantity-' + productId);
+            let newQuantity = parseInt(quantityInput.value) + change;
+            if (newQuantity < 1) newQuantity = 1;
+            if (newQuantity > parseInt(quantityInput.max)) newQuantity = parseInt(quantityInput.max);
+            quantityInput.value = newQuantity;
+
+            document.getElementById('hidden-quantity-' + productId).value = newQuantity;
+            document.getElementById('update-form-' + productId).submit();
+        }
+    </script>
 </x-app-layout>

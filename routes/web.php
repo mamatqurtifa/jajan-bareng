@@ -6,6 +6,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +29,10 @@ Route::middleware('auth')->group(function () {
         ->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'process'])
         ->name('checkout.process');
+    Route::get('/orders', [OrderController::class, 'index'])
+        ->name('orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])
+        ->name('orders.show');
 });
 
 Route::get('/organizations', [OrganizationController::class, 'index'])
