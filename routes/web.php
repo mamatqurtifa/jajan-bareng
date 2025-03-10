@@ -54,6 +54,9 @@ Route::post('/cart/remove', [CartController::class, 'remove'])
 Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');
 
+Route::get('/products', [ProductController::class, 'index'])
+    ->name('products.index');
+
 require __DIR__ . '/auth.php';
 
 Route::get('/{organization_name}', [OrganizationController::class, 'show'])

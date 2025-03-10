@@ -16,11 +16,11 @@ class CartController extends Controller
             $product = Product::find($id);
             if ($product) {
                 $updatedCart[$id] = [
-                    "name" => $details['name'],
-                    "quantity" => $details['quantity'],
-                    "price" => $details['price'],
-                    "image" => $details['image'],
-                    "stock" => $product->stock // Read stock from the Product model
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'quantity' => $details['quantity'],
+                    'image' => $product->image,
                 ];
             }
         }

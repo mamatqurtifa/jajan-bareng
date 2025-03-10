@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Carbon\Carbon;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
-        return view('products.index', compact('products'));
+        $currentDate = $request->input('date', Carbon::today()->toDateString());
+        $products = Product::where('available_date', $currentDate)->get();
+
+        return view('products.index', compact('products', 'currentDate'));
     }
 
     public function show($id)

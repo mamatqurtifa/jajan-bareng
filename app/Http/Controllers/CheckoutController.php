@@ -13,7 +13,22 @@ class CheckoutController extends Controller
     public function index()
     {
         $cart = session()->get('cart', []);
-        return view('checkout.index', compact('cart'));
+        $updatedCart = [];
+
+        foreach ($cart as $id => $details) {
+            $product = Product::find($id);
+            if ($product) {
+                $updatedCart[$id] = [
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'quantity' => $details['quantity'],
+                    'image' => $product->image,
+                ];
+            }
+        }
+
+        return view('checkout.index', compact('updatedCart'));
     }
 
     public function process(Request $request)

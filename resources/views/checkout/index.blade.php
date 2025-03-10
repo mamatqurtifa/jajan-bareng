@@ -9,7 +9,7 @@
         <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
             <h2 class="text-xl font-bold mb-4">Order Summary</h2>
             <ul>
-                @foreach($cart as $id => $details)
+                @foreach($updatedCart as $id => $details)
                     <li class="mb-4">
                         <div class="flex justify-between">
                             <div>
