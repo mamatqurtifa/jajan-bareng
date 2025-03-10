@@ -32,6 +32,7 @@ class OrderResource extends Resource
                     ->visible(fn() => $user->roles->contains('name', 'super_admin')),
                 Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('total_price')->money('IDR', true),
+                Tables\Columns\TextColumn::make('note')->label('Note'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime(),
             ])
             ->actions([
@@ -77,6 +78,8 @@ class OrderResource extends Resource
                             ->badge(),
                         Infolists\Components\TextEntry::make('total_price')
                             ->money('IDR', true),
+                        Infolists\Components\TextEntry::make('note')
+                            ->label('Note'),
                         Infolists\Components\TextEntry::make('created_at')
                             ->dateTime(),
                     ]),
@@ -123,5 +126,4 @@ class OrderResource extends Resource
     {
         return false;
     }
-    
 }

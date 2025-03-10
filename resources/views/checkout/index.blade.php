@@ -25,7 +25,14 @@
             </ul>
             <form action="{{ route('checkout.process') }}" method="POST">
                 @csrf
-                <button type="submit" class="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Place Order</button>
+                <!-- Other form fields for checkout -->
+
+                <div class="mb-4">
+                    <label for="note" class="block text-gray-700">Note:</label>
+                    <textarea name="note" id="note" rows="4" class="mt-2 p-2 border rounded w-full"></textarea>
+                </div>
+
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Place Order</button>
             </form>
         </div>
     </div>

@@ -61,6 +61,7 @@ class CheckoutController extends Controller
             $order->total_price = array_sum(array_map(function($item) {
                 return $item['price'] * $item['quantity'];
             }, $products));
+            $order->note = $request->note; // Add note to the order
             $order->save();
 
             // Create order items
