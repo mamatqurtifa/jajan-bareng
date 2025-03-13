@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
+use Illuminate\Support\Facades\Config;
 
 Route::get('/', function () {
     return view('welcome');
@@ -64,3 +65,10 @@ require __DIR__ . '/auth.php';
 Route::get('/{organization_name}', [OrganizationController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('organization.products');
+
+Route::fallback(function () {
+    return response()->view('errors.404', [
+        'currentTime' => now()->format('Y-m-d H:i:s'),
+        'currentUser' => \Illuminate\Support\Facades\Auth::user()?->name ?? 'Guest'
+    ], 404);
+});
